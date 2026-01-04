@@ -7,6 +7,10 @@ PRICE_MAP = {
     "pro": "price_1Slt5aAjGRVjyyWNnoq81mV4",
     "enterprise": "price_1Slt6dAjGRVjyyWNrEvmCRd2"
 }
+PLAN_FROM_PRICE = {
+    "price_1Slt5aAjGRVjyyWNnoq81mV4": "pro",
+    "price_1Slt6dAjGRVjyyWNrEvmCRd2": "enterprise"
+}
 
 def create_checkout_session(plan: str, user_id: int):
     if plan not in PRICE_MAP:
