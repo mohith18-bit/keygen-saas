@@ -4,8 +4,8 @@ import os
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 PRICE_MAP = {
-    "pro": "price_TEST_PRO_ID",
-    "enterprise": "price_TEST_ENTERPRISE_ID"
+    "pro": "price_1Slt5aAjGRVjyyWNnoq81mV4",
+    "enterprise": "price_1Slt6dAjGRVjyyWNrEvmCRd2"
 }
 
 def create_checkout_session(plan: str, user_id: int):
