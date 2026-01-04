@@ -1,13 +1,29 @@
-from fastapi import APIRouter, Depends
-from .apikey_auth import verify_api_key
-from .models import APIKey
+from datetime import datetime, timedelta
+from jose import jwt, JWTError
+from fastapi import HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-router = APIRouter()
+SECRET_KEY = "CHANGE_THIS_SECRET_LATER"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
-@router.get("/customer/data")
-def get_customer_data(api_key: APIKey = Depends(verify_api_key)):
-    return {
-        "message": "You accessed customer data using an API key",
-        "api_key_id": api_key.id,
-        "user_id": api_key.user_id
-    }
+security = HTTPBearer()
+
+def create_access_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def verify_token(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id = payload.get("sub")
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        return user_id
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
