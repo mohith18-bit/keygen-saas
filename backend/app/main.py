@@ -10,6 +10,7 @@ from .apikey_manage import router as apikey_manage_router
 from .customer import router as customer_router
 from .usage import router as usage_router
 from .stripe_routes import router as stripe_router
+from .upi_routes import router as upi_router
 
 app = FastAPI(title="KeyGen SaaS")
 
@@ -23,6 +24,7 @@ app.include_router(apikey_manage_router)
 app.include_router(customer_router)
 app.include_router(usage_router)
 app.include_router(stripe_router)
+app.include_router(upi_router)
 
 @app.get("/")
 def home():
