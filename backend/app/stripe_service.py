@@ -23,6 +23,7 @@ def create_checkout_session(plan: str, user_id: int):
             "quantity": 1,
         }],
         mode="payment",
+        metadata={"user_id": user_id},
         success_url=f"https://keygen-saas.onrender.com/stripe/success?plan={plan}&user_id={user_id}",
         cancel_url="https://keygen-saas.onrender.com/stripe/cancel",
     )
